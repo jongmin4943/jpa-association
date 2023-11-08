@@ -7,7 +7,7 @@ import java.util.List;
 public interface EntityAssociatedColumn extends EntityColumn {
 
     default EntityMetadata<?> getAssociatedEntityMetadata() {
-        return EntityMetadataProvider.getInstance().getEntityMetadata(this.getJoinColumnType());
+        return EntityMetadata.from(this.getJoinColumnType());
     }
 
     default EntityColumns getAssociatedEntityColumns() {

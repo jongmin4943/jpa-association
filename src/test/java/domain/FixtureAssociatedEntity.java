@@ -248,4 +248,29 @@ public class FixtureAssociatedEntity {
 
     }
 
+
+    @Entity
+    @Table(name = "city")
+    public static class City {
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
+        private String name;
+
+
+        @ManyToOne
+        private Country country;
+    }
+
+    @Entity
+    @Table(name = "country")
+    public static class Country {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
+        private String name;
+    }
 }

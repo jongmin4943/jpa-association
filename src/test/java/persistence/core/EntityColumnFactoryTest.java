@@ -39,4 +39,13 @@ class EntityColumnFactoryTest {
         assertThat(actual).isInstanceOf(EntityOneToManyColumn.class);
     }
 
+    @Test
+    @DisplayName("EntityColumnFactory 로 EntityManyToOneColumn 을 생성 할 수 있다.")
+    void createManyToOneTest() throws NoSuchFieldException {
+        final Class<FixtureAssociatedEntity.City> orderClass = FixtureAssociatedEntity.City.class;
+
+        final EntityColumn actual = EntityColumnFactory.create(orderClass.getDeclaredField("country"), "city");
+
+        assertThat(actual).isInstanceOf(EntityManyToOneColumn.class);
+    }
 }

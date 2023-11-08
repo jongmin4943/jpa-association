@@ -1,6 +1,7 @@
 package persistence.core;
 
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 import java.lang.reflect.Field;
@@ -17,6 +18,7 @@ public class EntityColumnFactory {
         conditions = new LinkedHashMap<>();
         conditions.put(field -> field.isAnnotationPresent(Id.class), EntityIdColumn::new);
         conditions.put(field -> field.isAnnotationPresent(OneToMany.class), EntityOneToManyColumn::new);
+        conditions.put(field -> field.isAnnotationPresent(ManyToOne.class), EntityManyToOneColumn::new);
     }
 
     public static EntityColumn create(final Field field, final String tableName) {
