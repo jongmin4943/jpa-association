@@ -27,7 +27,7 @@ public class EntityColumns implements Iterable<EntityColumn> {
         this.validate(clazz);
         return Arrays.stream(clazz.getDeclaredFields())
                 .filter(field -> !field.isAnnotationPresent(Transient.class))
-                .map(field -> EntityColumn.from(field, tableName))
+                .map(field -> EntityColumnFactory.create(field, tableName))
                 .collect(Collectors.toUnmodifiableList());
     }
 

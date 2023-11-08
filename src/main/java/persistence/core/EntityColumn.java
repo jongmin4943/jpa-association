@@ -1,10 +1,5 @@
 package persistence.core;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
-import java.lang.reflect.Field;
-
 public interface EntityColumn {
 
     String ALIAS_DELIMITER = ".";
@@ -37,18 +32,6 @@ public interface EntityColumn {
 
     default boolean isField() {
         return this instanceof EntityFieldColumn;
-    }
-
-    static EntityColumn from(final Field field, final String tableName) {
-        if (field.isAnnotationPresent(Id.class)) {
-            return new EntityIdColumn(field, tableName);
-        }
-
-        if (field.isAnnotationPresent(OneToMany.class)) {
-            return new EntityOneToManyColumn(field, tableName);
-        }
-
-        return new EntityFieldColumn(field, tableName);
     }
 
     default String getNameWithAlias() {
