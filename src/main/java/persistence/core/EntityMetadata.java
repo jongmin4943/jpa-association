@@ -170,12 +170,12 @@ public class EntityMetadata<T> {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         final EntityMetadata<?> that = (EntityMetadata<?>) object;
-        return Objects.equals(clazz, that.clazz) && Objects.equals(tableName, that.tableName) && Objects.equals(columns, that.columns) && Objects.equals(idColumn, that.idColumn) && Objects.equals(oneToManyColumns, that.oneToManyColumns);
+        return Objects.equals(clazz, that.clazz) && Objects.equals(tableName, that.tableName) && Objects.equals(columns, that.columns) && Objects.equals(idColumn, that.idColumn) && Objects.equals(oneToManyColumns, that.oneToManyColumns) && Objects.equals(manyToOneColumns, that.manyToOneColumns);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(clazz, tableName, columns, idColumn, oneToManyColumns);
+        return Objects.hash(clazz, tableName, columns, idColumn, oneToManyColumns, manyToOneColumns);
     }
 
 
