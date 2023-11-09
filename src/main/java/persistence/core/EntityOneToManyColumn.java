@@ -66,6 +66,11 @@ public class EntityOneToManyColumn implements EntityAssociatedColumn {
     }
 
     @Override
+    public String getNameWithAliasAssociatedEntity() {
+        return getAssociatedEntityTableName() + ALIAS_DELIMITER + this.getName();
+    }
+
+    @Override
     public FetchType getFetchType() {
         return this.fetchType;
     }

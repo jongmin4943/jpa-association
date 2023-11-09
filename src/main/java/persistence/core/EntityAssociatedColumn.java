@@ -18,9 +18,7 @@ public interface EntityAssociatedColumn extends EntityColumn {
         return getAssociatedEntityMetadata().getColumnNamesWithAlias();
     }
 
-    default String getNameWithAliasAssociatedEntity() {
-        return getAssociatedEntityTableName() + ALIAS_DELIMITER + this.getName();
-    }
+    String getNameWithAliasAssociatedEntity();
 
     default String getAssociatedEntityTableName() {
         return getAssociatedEntityMetadata().getTableName();

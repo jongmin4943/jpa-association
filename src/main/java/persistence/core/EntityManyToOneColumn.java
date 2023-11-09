@@ -60,6 +60,15 @@ public class EntityManyToOneColumn implements EntityAssociatedColumn {
         return field.getName() + DELIMITER + entityMetadata.getIdColumnName();
     }
 
+    public String getAssociatedEntityIdColumnNameWithAlias() {
+        return getAssociatedEntityMetadata().getIdColumnNameWithAlias();
+    }
+
+    @Override
+    public String getNameWithAliasAssociatedEntity() {
+        return this.getTableName() + ALIAS_DELIMITER + this.getName();
+    }
+
     @Override
     public FetchType getFetchType() {
         return this.fetchType;
@@ -127,4 +136,5 @@ public class EntityManyToOneColumn implements EntityAssociatedColumn {
     public int hashCode() {
         return Objects.hash(column, isNotNull, isInsertable, fetchType, joinColumnType, joinColumnName);
     }
+
 }
