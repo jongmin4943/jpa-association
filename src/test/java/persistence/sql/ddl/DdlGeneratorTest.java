@@ -76,6 +76,25 @@ class DdlGeneratorTest {
                 .isEqualToIgnoringCase("create table order_items (id bigint not null auto_increment,product varchar(255),quantity int,order_id bigint,foreign key(order_id) references orders (id),CONSTRAINT PK_order_items PRIMARY KEY (id))");
     }
 
+    @Test
+    @DisplayName("Country class create 쿼리 생성 테스트")
+    void generateCountryCreateDdlTest() {
+        entityMetadata = new EntityMetadata<>(FixtureAssociatedEntity.Country.class);
+        final String query = generator.generateCreateDdl(entityMetadata);
+        assertThat(query)
+                .isEqualToIgnoringCase("create table country (id bigint not null auto_increment,name varchar(255),CONSTRAINT PK_country PRIMARY KEY (id))");
+    }
+
+    @Test
+    @DisplayName("City class create 쿼리 생성 테스트")
+    void generateCityCreateDdlTest() {
+        entityMetadata = new EntityMetadata<>(FixtureAssociatedEntity.City.class);
+        final String query = generator.generateCreateDdl(entityMetadata);
+        assertThat(query)
+                .isEqualToIgnoringCase("create table city (id bigint not null auto_increment,name varchar(255),country_id bigint,foreign key(country_id) references country (id),CONSTRAINT PK_city PRIMARY KEY (id))");
+    }
+
+
     private static Stream<Arguments> fixtureArgumentProvider() {
         return Stream.of(
                 Arguments.of(FixtureEntity.WithId.class, "create table WithId (id bigint not null,CONSTRAINT PK_WithId PRIMARY KEY (id))", "Id 컬럼만 있을경우"),
