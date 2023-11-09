@@ -152,8 +152,8 @@ class EntityMetadataTest {
     }
 
     @Test
-    @DisplayName("getColumnNamesWithAlias 를 통해 EntityMetadata 의 Column Name 들을 Alias 와 함께 반환 받을 수 있다.")
-    void getColumnNamesWithAliasTest() {
+    @DisplayName("getColumnNamesWithAlias 를 통해 EntityMetadata with OneToMany 의 Column Name 들을 Alias 와 함께 반환 받을 수 있다.")
+    void getColumnNamesWithAliasOneToManyTest() {
         mockClass = FixtureAssociatedEntity.Order.class;
 
         final EntityMetadata<?> entityMetadata = new EntityMetadata<>(mockClass);
@@ -168,6 +168,22 @@ class EntityMetadataTest {
     }
 
     @Test
+    @DisplayName("getColumnNamesWithAlias 를 통해 EntityMetadata with ManyToOne 의 Column Name 들을 Alias 와 함께 반환 받을 수 있다.")
+    void getColumnNamesWithAliasManyToOneTest() {
+        mockClass = FixtureAssociatedEntity.City.class;
+
+        final EntityMetadata<?> entityMetadata = new EntityMetadata<>(mockClass);
+
+        assertThat(entityMetadata.getColumnNamesWithAlias()).containsExactly(
+                "city.id",
+                "city.name",
+                "country.id",
+                "country.name"
+        );
+    }
+
+
+    @Test
     @DisplayName("getLazyOneToManyColumns 를 통해 해당 Entity 의 OneToMany(Lazy) 컬럼들을 반환 받을 수 있다.")
     void getLazyOneToManyColumnsTest() {
         mockClass = FixtureAssociatedEntity.Order.class;
@@ -175,11 +191,12 @@ class EntityMetadataTest {
         final EntityMetadata<?> entityMetadata = new EntityMetadata<>(mockClass);
         final EntityMetadata<?> withOneToManyEntityMetadata = new EntityMetadata<>(FixtureAssociatedEntity.WithOneToMany.class);
 
-        assertSoftly(softly->{
+        assertSoftly(softly -> {
             softly.assertThat(entityMetadata.getLazyOneToManyColumns()).hasSize(0);
             softly.assertThat(withOneToManyEntityMetadata.getLazyOneToManyColumns()).hasSize(1);
         });
     }
+
     @Test
     @DisplayName("getLazyOneToManyColumns 를 통해 해당 Entity 의 OneToMany(Eager) 컬럼들을 반환 받을 수 있다.")
     void getEagerOneToManyColumnsTest() {
@@ -188,7 +205,7 @@ class EntityMetadataTest {
         final EntityMetadata<?> entityMetadata = new EntityMetadata<>(mockClass);
         final EntityMetadata<?> withOneToManyEntityMetadata = new EntityMetadata<>(FixtureAssociatedEntity.WithOneToMany.class);
 
-        assertSoftly(softly->{
+        assertSoftly(softly -> {
             softly.assertThat(entityMetadata.getEagerOneToManyColumns()).hasSize(1);
             softly.assertThat(withOneToManyEntityMetadata.getEagerOneToManyColumns()).hasSize(0);
         });

@@ -71,6 +71,14 @@ public class EntityMetadata<T> {
             return oneToManyColumn.getAssociatedEntityColumnNamesWithAlias();
         }
 
+        if (entityColumn.isManyToOne()) {
+            final EntityManyToOneColumn manyToOneColumn = (EntityManyToOneColumn) entityColumn;
+            if (manyToOneColumn.isFetchTypeLazy()) {
+                return List.of(manyToOneColumn.getName());
+            }
+            return manyToOneColumn.getAssociatedEntityColumnNamesWithAlias();
+        }
+
         return List.of(entityColumn.getNameWithAlias());
     }
 
@@ -141,6 +149,12 @@ public class EntityMetadata<T> {
 
     public List<EntityManyToOneColumn> getManyToOneColumns() {
         return this.manyToOneColumns;
+    }
+
+    public List<EntityManyToOneColumn> getEagerManyToOneColumns() {
+        return this.manyToOneColumns.stream()
+                .filter(EntityAssociatedColumn::isFetchTypeEager)
+                .collect(Collectors.toUnmodifiableList());
     }
 
 
