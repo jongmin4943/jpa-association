@@ -95,6 +95,14 @@ public class EntityColumns implements Iterable<EntityColumn> {
                 .collect(Collectors.toUnmodifiableList());
     }
 
+
+    public List<EntityManyToOneColumn> getManyToOneColumns() {
+        return this.columns.stream()
+                .filter(EntityColumn::isManyToOne)
+                .map(EntityManyToOneColumn.class::cast)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
     @Override
     public boolean equals(final Object object) {
         if (this == object) return true;

@@ -30,6 +30,10 @@ public interface EntityColumn {
         return this instanceof EntityOneToManyColumn;
     }
 
+    default boolean isManyToOne() {
+        return this instanceof EntityManyToOneColumn;
+    }
+
     default boolean isField() {
         return this instanceof EntityFieldColumn;
     }
