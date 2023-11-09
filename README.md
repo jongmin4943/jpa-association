@@ -84,3 +84,44 @@ class HelloTarget {
 - 요구사항 2 - 조회 시 프록시 객체를 사용해 적용해보자
 - [x] Entity 를 Load 할시 OneToManyColumn 이 Lazy 인 경우 Proxy 객체를 생성해서 넣어둔다.
 - [x] OneToManyColumn 의 메서드 호출 시 load 한다.
+
+### 3단계 - OneToMany (FetchType.LAZY)
+- 요구사항 1 - CGLib Proxy 적용
+- [x] 테이블에 임의의 데이터를 넣고 가져오기
+- [x] Proxy 를 활용해 Lazy loading 을 구현
+- [x] Query 확인
+- [x] Entity 객체 만들어 보기
+
+### 4단계 - ManyToOne (개인적 진행)
+```java
+@Entity
+@Table(name = "city")
+public class City {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    
+    @ManyToOne
+    private Country country;
+}
+
+@Entity
+@Table(name = "country")
+public class Country {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+}
+```
+- 요구사항 1 - Join Query 만들기
+- [x] @ManyToOne(fetch) 정보를 Metadata 에 저장한다.
+- [x] @JoinColumn 정보를 Metadata 에 저장한다.
+- [x] @ManyToOne 클래스 정보를 Metadata 에 저장한다.
+- [x] Entity `City` 와 `Country` 의 Metadata 를 이용해 create 쿼리를 만든다.
+  <br> city 목표 쿼리문 : `create table city (id bigint not null auto_increment,name varchar(255),country_id bigint,foreign key(country_id) references country (id),CONSTRAINT PK_city PRIMARY KEY (id))`
+- [ ] Entity `City` 와 `Country` 의 Metadata 를 이용해 select 쿼리를 만든다.
+  <br> city 목표 쿼리문 : `select city.id, city.name, country.id, country.name from city left join country on country.id = city.country_id where city.id=1`
