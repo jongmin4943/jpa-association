@@ -127,4 +127,4 @@ public class Country {
   <br> city 목표 쿼리문 : `select city.id, city.name, country.id, country.name from city left join country on country.id = city.country_id where city.id=1`
 
 - 요구사항 2 - Join Query 를 만들어 Entity 화 해보기
-- [ ] ManyToOneColumnMapper 추가 해서 Entity 화 하기
+- [x] ManyToOneColumnMapper 추가 해서 Entity 화 하기
