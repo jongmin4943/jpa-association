@@ -125,3 +125,6 @@ public class Country {
   <br> city 목표 쿼리문 : `create table city (id bigint not null auto_increment,name varchar(255),country_id bigint,foreign key(country_id) references country (id),CONSTRAINT PK_city PRIMARY KEY (id))`
 - [x] Entity `City` 와 `Country` 의 Metadata 를 이용해 select 쿼리를 만든다.
   <br> city 목표 쿼리문 : `select city.id, city.name, country.id, country.name from city left join country on country.id = city.country_id where city.id=1`
+
+- 요구사항 2 - Join Query 를 만들어 Entity 화 해보기
+- [ ] ManyToOneColumnMapper 추가 해서 Entity 화 하기
