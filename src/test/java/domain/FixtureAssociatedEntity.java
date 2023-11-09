@@ -45,6 +45,15 @@ public class FixtureAssociatedEntity {
     }
 
     @Entity
+    public static class WithManyToOneFetchTypeLAZY {
+        @Id
+        private Long id;
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        WithId withId;
+    }
+
+    @Entity
     public static class WithOneToManyJoinColumn {
         @Id
         private Long id;
@@ -52,6 +61,17 @@ public class FixtureAssociatedEntity {
         @OneToMany
         @JoinColumn(name = "join_pk")
         List<WithId> withIds;
+    }
+
+    @Entity
+    public static class WithManyToOneJoinColumn {
+        @Id
+        private Long id;
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "join_pk")
+        WithId withId;
+
     }
 
     @Entity
@@ -77,6 +97,17 @@ public class FixtureAssociatedEntity {
         @JoinColumn(insertable = false)
         List<WithId> withIds;
     }
+
+    @Entity
+    public static class WithManyToOneInsertableFalse {
+        @Id
+        private Long id;
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(insertable = false)
+        WithId withId;
+    }
+
     @Entity
     public static class WithOneToManyNullableFalse {
         @Id
@@ -87,6 +118,15 @@ public class FixtureAssociatedEntity {
         List<WithId> withIds;
     }
 
+    @Entity
+    public static class WithManyToOneNullableFalse {
+        @Id
+        private Long id;
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(nullable = false)
+        WithId withId;
+    }
 
     @Entity
     @Table(name = "orders")
