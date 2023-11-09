@@ -123,5 +123,5 @@ public class Country {
 - [x] @ManyToOne 클래스 정보를 Metadata 에 저장한다.
 - [x] Entity `City` 와 `Country` 의 Metadata 를 이용해 create 쿼리를 만든다.
   <br> city 목표 쿼리문 : `create table city (id bigint not null auto_increment,name varchar(255),country_id bigint,foreign key(country_id) references country (id),CONSTRAINT PK_city PRIMARY KEY (id))`
-- [ ] Entity `City` 와 `Country` 의 Metadata 를 이용해 select 쿼리를 만든다.
+- [x] Entity `City` 와 `Country` 의 Metadata 를 이용해 select 쿼리를 만든다.
   <br> city 목표 쿼리문 : `select city.id, city.name, country.id, country.name from city left join country on country.id = city.country_id where city.id=1`

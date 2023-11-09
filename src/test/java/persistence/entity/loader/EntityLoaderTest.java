@@ -1,5 +1,6 @@
 package persistence.entity.loader;
 
+import domain.FixtureAssociatedEntity.City;
 import domain.FixtureAssociatedEntity.Order;
 import domain.FixtureAssociatedEntity.OrderLazyItem;
 import domain.FixtureEntity.Person;
@@ -106,6 +107,16 @@ class EntityLoaderTest {
 
         assertThat(query)
                 .isEqualTo("select lazy_order_items.id, lazy_order_items.product, lazy_order_items.quantity from lazy_order_items where lazy_order_id=1");
+    }
+
+    @Test
+    @DisplayName("City 클래스를 이용해 left join orderItems select query를 만들 수 있다.")
+    void renderCitySelectTest() {
+        final Class<City> clazz = City.class;
+        final SimpleResultSet rs = new SimpleResultSet();
+        final EntityLoader<City> entityLoader = EntityLoader.of(EntityMetadata.from(clazz), new MockDmlGenerator(), new MockJdbcTemplate(rs));
+
+        assertThat(entityLoader.renderSelect(1L)).isEqualTo("select city.id, city.name, country.id, country.name from city left join country on country.id = city.country_id where city.id=1");
     }
 
 

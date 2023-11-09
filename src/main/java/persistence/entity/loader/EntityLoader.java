@@ -2,6 +2,7 @@ package persistence.entity.loader;
 
 import jdbc.JdbcTemplate;
 import persistence.core.EntityIdColumn;
+import persistence.core.EntityManyToOneColumn;
 import persistence.core.EntityMetadata;
 import persistence.core.EntityOneToManyColumn;
 import persistence.entity.mapper.EntityRowMapper;
@@ -58,6 +59,9 @@ public class EntityLoader<T> {
                 .table(tableName)
                 .column(entityMetadata.getColumnNamesWithAlias());
 
+        entityMetadata.getEagerManyToOneColumns()
+                .forEach(entityManyToOneColumn -> bindManyToOneJoinClause(queryBuilder, entityManyToOneColumn));
+
         entityMetadata.getEagerOneToManyColumns()
                 .forEach(entityOneToManyColumn -> bindOneToManyJoinClause(queryBuilder, entityOneToManyColumn));
 
@@ -66,8 +70,15 @@ public class EntityLoader<T> {
                 .build();
     }
 
+    private void bindManyToOneJoinClause(final SelectQueryBuilder queryBuilder, final EntityManyToOneColumn entityManyToOneColumn) {
+        queryBuilder
+                .leftJoin(entityManyToOneColumn.getAssociatedEntityTableName())
+                .on(entityManyToOneColumn.getAssociatedEntityIdColumnNameWithAlias(), entityManyToOneColumn.getNameWithAliasAssociatedEntity());
+    }
+
     private void bindOneToManyJoinClause(final SelectQueryBuilder queryBuilder, final EntityOneToManyColumn entityOneToManyColumn) {
-        queryBuilder.leftJoin(entityOneToManyColumn.getAssociatedEntityTableName())
+        queryBuilder
+                .leftJoin(entityOneToManyColumn.getAssociatedEntityTableName())
                 .on(entityMetadata.getIdColumnNameWithAlias(), entityOneToManyColumn.getNameWithAliasAssociatedEntity());
     }
 
