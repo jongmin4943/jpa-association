@@ -89,6 +89,20 @@ public class FixtureAssociatedEntity {
     }
 
     @Entity
+    public static class WithTwoManyToOneColumns {
+        @Id
+        private Long id;
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "join_pk")
+        WithId lazyWithId;
+
+        @ManyToOne
+        @JoinColumn(name = "join_pk")
+        WithId eagerWithId;
+    }
+
+    @Entity
     public static class WithOneToManyInsertableFalse {
         @Id
         private Long id;
@@ -312,6 +326,19 @@ public class FixtureAssociatedEntity {
 
         @ManyToOne
         private Country country;
+
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Country getCountry() {
+            return country;
+        }
     }
 
     @Entity
@@ -322,5 +349,13 @@ public class FixtureAssociatedEntity {
         private Long id;
 
         private String name;
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 }

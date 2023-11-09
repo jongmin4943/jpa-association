@@ -115,4 +115,15 @@ class EntityColumnsTest {
 
         assertThatIterable(columns.getManyToOneColumns()).containsExactly(manyToOneColumn);
     }
+
+    @Test
+    @DisplayName("EntityColumns.getEagerManyToOneColumns 를 통해 ManyToOne(Eager) 컬럼들을 조회할 수 있다.")
+    void getEagerManyToOneColumnsTest() throws Exception {
+        mockClass = FixtureAssociatedEntity.WithTwoManyToOneColumns.class;
+
+        final EntityColumns columns = new EntityColumns(mockClass, tableName);
+        final EntityManyToOneColumn eagerColumn = new EntityManyToOneColumn(mockClass.getDeclaredField("eagerWithId"), tableName);
+
+        assertThatIterable(columns.getEagerManyToOneColumns()).containsExactly(eagerColumn);
+    }
 }

@@ -103,6 +103,12 @@ public class EntityColumns implements Iterable<EntityColumn> {
                 .collect(Collectors.toUnmodifiableList());
     }
 
+    public List<EntityManyToOneColumn> getEagerManyToOneColumns() {
+        return this.getManyToOneColumns().stream()
+                .filter(EntityAssociatedColumn::isFetchTypeEager)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
     @Override
     public boolean equals(final Object object) {
         if (this == object) return true;
