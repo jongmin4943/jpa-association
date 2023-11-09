@@ -17,6 +17,7 @@ public class EntityMetadata<T> {
     private final EntityColumns columns;
     private final EntityIdColumn idColumn;
     private final List<EntityOneToManyColumn> oneToManyColumns;
+    private final List<EntityManyToOneColumn> manyToOneColumns;
 
     public EntityMetadata(final Class<T> clazz) {
         this.validate(clazz);
@@ -25,6 +26,7 @@ public class EntityMetadata<T> {
         this.columns = new EntityColumns(clazz, tableName);
         this.idColumn = this.columns.getId();
         this.oneToManyColumns = this.columns.getOneToManyColumns();
+        this.manyToOneColumns = this.columns.getManyToOneColumns();
     }
 
     public static <T> EntityMetadata<T> from(final Class<T> clazz) {
@@ -135,6 +137,10 @@ public class EntityMetadata<T> {
         return this.oneToManyColumns.stream()
                 .filter(EntityAssociatedColumn::isFetchTypeEager)
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    public List<EntityManyToOneColumn> getManyToOneColumns() {
+        return this.manyToOneColumns;
     }
 
 

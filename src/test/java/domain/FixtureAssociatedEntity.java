@@ -26,6 +26,16 @@ public class FixtureAssociatedEntity {
     }
 
     @Entity
+    public static class WithManyToOne {
+        @Id
+        private Long id;
+
+        @ManyToOne
+        WithId withId;
+    }
+
+
+    @Entity
     public static class WithOneToManyFetchTypeEAGER {
         @Id
         private Long id;

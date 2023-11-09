@@ -194,4 +194,16 @@ class EntityMetadataTest {
         });
     }
 
+    @Test
+    @DisplayName("getManyToOneColumns 를 통해 ManyToOne columns 를 반환 받을 수 있다.")
+    void getManyToOneColumnsTest() throws Exception {
+        mockClass = FixtureAssociatedEntity.WithManyToOne.class;
+
+        final EntityMetadata<?> entityMetadata = new EntityMetadata<>(mockClass);
+        final EntityManyToOneColumn manyToOneColumn = new EntityManyToOneColumn(mockClass.getDeclaredField("withId"), "WithManyToOne");
+
+        assertThatIterable(entityMetadata.getManyToOneColumns()).containsExactly(manyToOneColumn);
+    }
+
+
 }
