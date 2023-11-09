@@ -126,8 +126,8 @@ class EntityMetadataTest {
         final EntityMetadata<?> notAssociatedEntityMetadata = new EntityMetadata<>(FixtureEntity.WithIdAndColumn.class);
 
         assertSoftly(softly -> {
-            softly.assertThat(entityMetadata.hasAssociatedOf(associatedEntityMetadata)).isTrue();
-            softly.assertThat(entityMetadata.hasAssociatedOf(notAssociatedEntityMetadata)).isFalse();
+            softly.assertThat(entityMetadata.hasOneToManyAssociatedOf(associatedEntityMetadata)).isTrue();
+            softly.assertThat(entityMetadata.hasOneToManyAssociatedOf(notAssociatedEntityMetadata)).isFalse();
         });
     }
 

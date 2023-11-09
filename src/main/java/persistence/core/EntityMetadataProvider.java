@@ -35,9 +35,9 @@ public class EntityMetadataProvider {
                 .forEach(entity -> cache.put(entity, new EntityMetadata<>(entity)));
     }
 
-    public Set<EntityMetadata<?>> getAllAssociatedEntitiesMetadata(final EntityMetadata<?> entityMetadata) {
+    public Set<EntityMetadata<?>> getOneToManyAssociatedEntitiesMetadata(final EntityMetadata<?> entityMetadata) {
         return cache.values().stream()
-                .filter(metadata -> metadata.hasAssociatedOf(entityMetadata))
+                .filter(metadata -> metadata.hasOneToManyAssociatedOf(entityMetadata))
                 .collect(Collectors.toUnmodifiableSet());
     }
 

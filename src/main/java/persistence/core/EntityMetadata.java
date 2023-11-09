@@ -152,7 +152,7 @@ public class EntityMetadata<T> {
         return this.clazz;
     }
 
-    public boolean hasAssociatedOf(final EntityMetadata<?> entityMetadata) {
+    public boolean hasOneToManyAssociatedOf(final EntityMetadata<?> entityMetadata) {
         return oneToManyColumns.stream()
                 .anyMatch(entityOneToManyColumn -> entityMetadata.isType(entityOneToManyColumn.getJoinColumnType()));
     }
