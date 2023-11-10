@@ -95,6 +95,10 @@ public class SimpleEntityManager implements EntityManager {
         final Object entityFromDatabase = entityLoader.loadById(key)
                 .orElseThrow(() -> new PersistenceException("존재하지 않는 entity 입니다."));
 
+        // FIXME ManyToOne 같은 경우 ResultSet 에서 나온 Id 값으로 Proxy 객체를 생성해야하는데 이 시점엔 Id 를 가져올 ResultSet 이 없다..
+//        entityMetadata.getLazyManyToOneColumns()
+//                .forEach(manyToOneColumn -> entityProxyFactory.initManyToOneProxy(???, entityFromDatabase, manyToOneColumn));
+
         entityMetadata.getLazyOneToManyColumns()
                 .forEach(oneToManyColumn -> entityProxyFactory.initProxy(key, entityFromDatabase, oneToManyColumn));
 

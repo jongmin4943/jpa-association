@@ -13,6 +13,8 @@ public class EntityColumnsMapperChain {
         this.mapper = EntityIdMapper.of(columns.getId())
                 .next(EntityFieldMapper.of(columns.getFieldColumns()))
                 .next(EntityEagerManyToOneMapper.of(columns.getEagerManyToOneColumns()))
+//               // FIXME entityProxyFactory 를 넣어줄 방법이 없다..
+//                .next(EntityLazyManyToOneMapper.of(columns.getLazyManyToOneColumns(), entityProxyFactory))
                 .next(EntityOneToManyMapper.of(columns.getEagerOneToManyColumns()));
     }
 
