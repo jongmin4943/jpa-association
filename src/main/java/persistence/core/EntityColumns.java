@@ -109,6 +109,12 @@ public class EntityColumns implements Iterable<EntityColumn> {
                 .collect(Collectors.toUnmodifiableList());
     }
 
+    public List<EntityManyToOneColumn> getLazyManyToOneColumns() {
+        return this.getManyToOneColumns().stream()
+                .filter(EntityAssociatedColumn::isFetchTypeLazy)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
     @Override
     public boolean equals(final Object object) {
         if (this == object) return true;
@@ -121,6 +127,5 @@ public class EntityColumns implements Iterable<EntityColumn> {
     public int hashCode() {
         return Objects.hash(columns);
     }
-
 
 }

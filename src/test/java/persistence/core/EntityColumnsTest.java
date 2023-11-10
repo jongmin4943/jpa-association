@@ -126,4 +126,15 @@ class EntityColumnsTest {
 
         assertThatIterable(columns.getEagerManyToOneColumns()).containsExactly(eagerColumn);
     }
+
+    @Test
+    @DisplayName("EntityColumns.getLazyManyToOneColumns 를 통해 ManyToOne(Lazy) 컬럼들을 조회할 수 있다.")
+    void getLazyManyToOneColumnsTest() throws Exception {
+        mockClass = FixtureAssociatedEntity.WithTwoManyToOneColumns.class;
+
+        final EntityColumns columns = new EntityColumns(mockClass, tableName);
+        final EntityManyToOneColumn lazyColumn = new EntityManyToOneColumn(mockClass.getDeclaredField("lazyWithId"), tableName);
+
+        assertThatIterable(columns.getLazyManyToOneColumns()).containsExactly(lazyColumn);
+    }
 }
