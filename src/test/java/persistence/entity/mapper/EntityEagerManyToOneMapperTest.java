@@ -16,14 +16,14 @@ import java.sql.Types;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @ExtendWith(EntityMetadataExtension.class)
-class EntityManyToOneMapperTest {
+class EntityEagerManyToOneMapperTest {
     @Test
-    @DisplayName("EntityManyToOneMapper 를 통해 ResultSet 들의 정보로 Entity 객체의 ManyToOneColumn 에 해당하는 필드에 값을 바인딩 할 수 있다.")
-    void entityManyToOneMapperTest() throws SQLException {
+    @DisplayName("EntityEagerManyToOneMapper 를 통해 ResultSet 들의 정보로 Entity 객체의 ManyToOneColumn 에 해당하는 필드에 값을 바인딩 할 수 있다.")
+    void entityEagerManyToOneMapperTest() throws SQLException {
         final Class<City> clazz = City.class;
         final City city = ReflectionUtils.createInstance(clazz);
         final EntityColumns entityColumns = new EntityColumns(clazz, "city");
-        final EntityColumnsMapper entityManyToOneMapper = EntityManyToOneMapper.of(entityColumns.getManyToOneColumns());
+        final EntityColumnsMapper entityManyToOneMapper = EntityEagerManyToOneMapper.of(entityColumns.getManyToOneColumns());
         final SimpleResultSet rs = new SimpleResultSet();
         rs.addColumn("country.id", Types.BIGINT, 10, 0);
         rs.addColumn("country.name", Types.VARCHAR, 255, 0);

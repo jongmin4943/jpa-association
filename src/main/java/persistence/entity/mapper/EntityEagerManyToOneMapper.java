@@ -8,16 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class EntityManyToOneMapper extends EntityColumnsMapper {
+public class EntityEagerManyToOneMapper extends EntityColumnsMapper {
 
     private final List<EntityManyToOneColumn> manyToOneColumns;
 
-    private EntityManyToOneMapper(final List<EntityManyToOneColumn> manyToOneColumns) {
+    private EntityEagerManyToOneMapper(final List<EntityManyToOneColumn> manyToOneColumns) {
         this.manyToOneColumns = manyToOneColumns;
     }
 
     public static EntityColumnsMapper of(final List<EntityManyToOneColumn> manyToOneColumns) {
-        return new EntityManyToOneMapper(manyToOneColumns);
+        return new EntityEagerManyToOneMapper(manyToOneColumns);
     }
 
     @Override
