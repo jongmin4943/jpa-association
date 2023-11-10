@@ -17,10 +17,25 @@ public class EntityProxyFactory {
         this.entityLoaders = entityLoaders;
     }
 
-    public void initOneToManyProxy(final Object ownerId, final Object owner, final EntityAssociatedColumn proxyColumn) {
-        final String proxyFieldName = proxyColumn.getFieldName();
-        final Object proxyOneToManyFieldValue = createProxy(proxyColumn, ownerId);
-        ReflectionUtils.injectField(owner, proxyFieldName, proxyOneToManyFieldValue);
+    public void initOneToManyProxy(final Object ownerId, final Object owner, final EntityAssociatedColumn oneToManyColumn) {
+        final String oneToManyFieldName = oneToManyColumn.getFieldName();
+        final Object proxyOneToManyFieldValue = createOneToManyProxy(oneToManyColumn, ownerId);
+        ReflectionUtils.injectField(owner, oneToManyFieldName, proxyOneToManyFieldValue);
+    }
+
+    private Object createOneToManyProxy(final EntityAssociatedColumn proxyColumn, final Object joinColumnId) {
+        final Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(proxyColumn.getType());
+        enhancer.setCallback(getOneToManyLazyLoader(proxyColumn, joinColumnId));
+        return enhancer.create();
+    }
+
+    private LazyLoader getOneToManyLazyLoader(final EntityAssociatedColumn proxyColumn, final Object joinColumnId) {
+        return () -> {
+            final Class<?> associatedEntityClassType = proxyColumn.getJoinColumnType();
+            final EntityLoader<?> associatedEntityLoader = entityLoaders.getEntityLoader(associatedEntityClassType);
+            return associatedEntityLoader.loadAllByOwnerId(proxyColumn.getNameWithAliasAssociatedEntity(), joinColumnId);
+        };
     }
 
     public <T> void initManyToOneProxy(final T owner, final EntityManyToOneColumn manyToOneColumn) {
@@ -34,13 +49,6 @@ public class EntityProxyFactory {
         final EntityMetadata<?> manyToOneEntityMetadata = manyToOneColumn.getAssociatedEntityMetadata();
         final Object manyToOneEntity = ReflectionUtils.getFieldValue(owner, manyToOneColumn.getFieldName());
         return ReflectionUtils.getFieldValue(manyToOneEntity, manyToOneEntityMetadata.getIdColumnFieldName());
-    }
-
-    private Object createProxy(final EntityAssociatedColumn proxyColumn, final Object joinColumnId) {
-        final Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(proxyColumn.getType());
-        enhancer.setCallback(getOneToManyLazyLoader(proxyColumn, joinColumnId));
-        return enhancer.create();
     }
 
     private Object createManyToOneProxy(final EntityAssociatedColumn proxyColumn, final Object manyToOneEntityId) {
@@ -61,14 +69,6 @@ public class EntityProxyFactory {
             return 1; // lazy init
         });
         return enhancer.create();
-    }
-
-    private LazyLoader getOneToManyLazyLoader(final EntityAssociatedColumn proxyColumn, final Object joinColumnId) {
-        return () -> {
-            final Class<?> associatedEntityClassType = proxyColumn.getJoinColumnType();
-            final EntityLoader<?> associatedEntityLoader = entityLoaders.getEntityLoader(associatedEntityClassType);
-            return associatedEntityLoader.loadAllByOwnerId(proxyColumn.getNameWithAliasAssociatedEntity(), joinColumnId);
-        };
     }
 
     private LazyLoader getManyToOneLazyLoader(final EntityAssociatedColumn proxyColumn, final Object manyToOneEntityId) {
