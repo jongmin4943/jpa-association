@@ -63,8 +63,8 @@ public class DdlGenerator {
         final StringBuilder builder = new StringBuilder();
         final Set<EntityMetadata<?>> oneToManyAssociatedEntitiesMetadata = entityMetadataProvider.getOneToManyAssociatedEntitiesMetadata(entityMetadata);
         oneToManyAssociatedEntitiesMetadata.forEach(oneToManyAssociatedEntityMetadata ->
-                oneToManyAssociatedEntityMetadata.getOneToManyColumns().forEach(entityAssociatedColumn ->
-                        builder.append(generateAssociatedColumnsClause(entityAssociatedColumn, oneToManyAssociatedEntityMetadata))
+                oneToManyAssociatedEntityMetadata.getOneToManyColumns().forEach(oneToManyColumn ->
+                        builder.append(generateAssociatedColumnsClause(oneToManyColumn, oneToManyAssociatedEntityMetadata))
                 ));
         return builder.toString();
     }
