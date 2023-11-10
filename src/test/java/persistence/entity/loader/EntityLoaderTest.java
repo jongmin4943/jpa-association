@@ -127,7 +127,7 @@ class EntityLoaderTest {
         final SimpleResultSet rs = new SimpleResultSet();
         final EntityLoader<LazyCity> entityLoader = EntityLoader.of(EntityMetadata.from(clazz), new MockDmlGenerator(), new MockJdbcTemplate(rs));
 
-        assertThat(entityLoader.renderSelect(1L)).isEqualTo("select lazy_city.id, lazy_city.name, lazy_city.country_id from lazy_city where lazy_city.id=1");
+        assertThat(entityLoader.renderSelect(1L)).isEqualTo("select lazy_city.id, lazy_city.name, lazy_city.lazy_country_id from lazy_city where lazy_city.id=1");
     }
 
 

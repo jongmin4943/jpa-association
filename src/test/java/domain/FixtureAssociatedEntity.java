@@ -371,6 +371,7 @@ public class FixtureAssociatedEntity {
 
 
         @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "lazy_country_id")
         private LazyCountry country;
 
 
