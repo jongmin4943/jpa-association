@@ -358,4 +358,50 @@ public class FixtureAssociatedEntity {
             return name;
         }
     }
+
+    @Entity
+    @Table(name = "lazy_city")
+    public static class LazyCity {
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
+        private String name;
+
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        private LazyCountry country;
+
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public LazyCountry getCountry() {
+            return country;
+        }
+    }
+
+    @Entity
+    @Table(name = "lazy_country")
+    public static class LazyCountry {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
+        private String name;
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
 }
