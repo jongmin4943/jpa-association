@@ -147,8 +147,10 @@ public class EntityMetadata<T> {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public List<EntityManyToOneColumn> getManyToOneColumns() {
-        return this.manyToOneColumns;
+    public List<EntityManyToOneColumn> getLazyManyToOneColumns() {
+        return this.manyToOneColumns.stream()
+                .filter(EntityAssociatedColumn::isFetchTypeLazy)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public List<EntityManyToOneColumn> getEagerManyToOneColumns() {

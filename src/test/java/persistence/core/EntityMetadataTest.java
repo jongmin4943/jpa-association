@@ -212,14 +212,25 @@ class EntityMetadataTest {
     }
 
     @Test
-    @DisplayName("getManyToOneColumns 를 통해 ManyToOne columns 를 반환 받을 수 있다.")
-    void getManyToOneColumnsTest() throws Exception {
-        mockClass = FixtureAssociatedEntity.WithManyToOne.class;
+    @DisplayName("getLazyManyToOneColumns 를 통해 ManyToOne(Lazy) columns 를 반환 받을 수 있다.")
+    void getLazyManyToOneColumnsTest() throws Exception {
+        mockClass = FixtureAssociatedEntity.WithTwoManyToOneColumns.class;
 
         final EntityMetadata<?> entityMetadata = new EntityMetadata<>(mockClass);
-        final EntityManyToOneColumn manyToOneColumn = new EntityManyToOneColumn(mockClass.getDeclaredField("withId"), "WithManyToOne");
+        final EntityManyToOneColumn manyToOneColumn = new EntityManyToOneColumn(mockClass.getDeclaredField("lazyWithId"), "WithTwoManyToOneColumns");
 
-        assertThatIterable(entityMetadata.getManyToOneColumns()).containsExactly(manyToOneColumn);
+        assertThatIterable(entityMetadata.getLazyManyToOneColumns()).containsExactly(manyToOneColumn);
+    }
+
+    @Test
+    @DisplayName("getEagerManyToOneColumns 를 통해 ManyToOne(Eager) columns 를 반환 받을 수 있다.")
+    void getEagerManyToOneColumnsTest() throws Exception {
+        mockClass = FixtureAssociatedEntity.WithTwoManyToOneColumns.class;
+
+        final EntityMetadata<?> entityMetadata = new EntityMetadata<>(mockClass);
+        final EntityManyToOneColumn manyToOneColumn = new EntityManyToOneColumn(mockClass.getDeclaredField("eagerWithId"), "WithTwoManyToOneColumns");
+
+        assertThatIterable(entityMetadata.getEagerManyToOneColumns()).containsExactly(manyToOneColumn);
     }
 
 
