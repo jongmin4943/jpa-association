@@ -47,7 +47,7 @@ class EntityProxyFactoryTest {
         final Class<OrderLazy> ownerClass = OrderLazy.class;
         final EntityOneToManyColumn oneToManyColumn = new EntityOneToManyColumn(ownerClass.getDeclaredField("orderItems"), "lazy_orders");
         final OrderLazy instance = ReflectionUtils.createInstance(ownerClass);
-        entityProxyFactory.initProxy(1L, instance, oneToManyColumn);
+        entityProxyFactory.initOneToManyProxy(1L, instance, oneToManyColumn);
 
 
         assertSoftly(softly -> {

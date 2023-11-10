@@ -99,7 +99,7 @@ public class SimpleEntityManager implements EntityManager {
                 .forEach(manyToOneColumn -> entityProxyFactory.initManyToOneProxy(entityFromDatabase, manyToOneColumn));
 
         entityMetadata.getLazyOneToManyColumns()
-                .forEach(oneToManyColumn -> entityProxyFactory.initProxy(key, entityFromDatabase, oneToManyColumn));
+                .forEach(oneToManyColumn -> entityProxyFactory.initOneToManyProxy(key, entityFromDatabase, oneToManyColumn));
 
         persistenceContext.addEntityEntry(entityFromDatabase, Status.LOADING);
         persistenceContext.addEntity(entityKey, entityFromDatabase);

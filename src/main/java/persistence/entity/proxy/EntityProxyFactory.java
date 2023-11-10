@@ -17,7 +17,7 @@ public class EntityProxyFactory {
         this.entityLoaders = entityLoaders;
     }
 
-    public void initProxy(final Object ownerId, final Object owner, final EntityAssociatedColumn proxyColumn) {
+    public void initOneToManyProxy(final Object ownerId, final Object owner, final EntityAssociatedColumn proxyColumn) {
         final String proxyFieldName = proxyColumn.getFieldName();
         final Object proxyOneToManyFieldValue = createProxy(proxyColumn, ownerId);
         ReflectionUtils.injectField(owner, proxyFieldName, proxyOneToManyFieldValue);
