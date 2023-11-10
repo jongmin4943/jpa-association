@@ -35,7 +35,7 @@ public class SimpleEntityManagerFactory implements EntityManagerFactory {
 
         this.entityPersisters = new EntityPersisters(persisters);
         this.entityLoaders = new EntityLoaders(loaders);
-        this.entityProxyFactory = new EntityProxyFactory(entityMetadataProvider, entityLoaders);
+        this.entityProxyFactory = new EntityProxyFactory(entityLoaders);
     }
 
     private Map<Class<?>, EntityPersister> createEntityPersisters(final List<Class<?>> entityClasses, final DmlGenerator dmlGenerator, final JdbcTemplate jdbcTemplate) {

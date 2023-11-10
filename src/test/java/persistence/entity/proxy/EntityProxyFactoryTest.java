@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import persistence.core.EntityManyToOneColumn;
 import persistence.core.EntityMetadata;
-import persistence.core.EntityMetadataProvider;
 import persistence.core.EntityOneToManyColumn;
 import persistence.entity.loader.EntityLoader;
 import persistence.entity.loader.EntityLoaders;
@@ -44,11 +43,11 @@ class EntityProxyFactoryTest {
     @Test
     @DisplayName("EntityOneToManyColumn(Lazy) 는 proxy 처리 되어 있으며 객체 메서드 호출시 값을 load 한다.")
     void shouldLoadLazyOneToManyCollection() throws NoSuchFieldException {
-        final EntityProxyFactory entityProxyFactory = new EntityProxyFactory(EntityMetadataProvider.getInstance(), new MockEntityLoaders(createOrderItemResultSet()));
+        final EntityProxyFactory entityProxyFactory = new EntityProxyFactory(new MockEntityLoaders(createOrderItemResultSet()));
         final Class<OrderLazy> ownerClass = OrderLazy.class;
-        final EntityOneToManyColumn test = new EntityOneToManyColumn(ownerClass.getDeclaredField("orderItems"), "lazy_orders");
+        final EntityOneToManyColumn oneToManyColumn = new EntityOneToManyColumn(ownerClass.getDeclaredField("orderItems"), "lazy_orders");
         final OrderLazy instance = ReflectionUtils.createInstance(ownerClass);
-        entityProxyFactory.initProxy(1L, instance, test);
+        entityProxyFactory.initProxy(1L, instance, oneToManyColumn);
 
 
         assertSoftly(softly -> {
@@ -66,19 +65,28 @@ class EntityProxyFactoryTest {
     @Test
     @DisplayName("EntityManyToOneColumn(Lazy) 는 proxy 처리 되어 있으며 객체 메서드 호출시 값을 load 한다.")
     void shouldLoadLazyManyToOneEntity() throws NoSuchFieldException {
-        final EntityProxyFactory entityProxyFactory = new EntityProxyFactory(EntityMetadataProvider.getInstance(), new MockEntityLoaders(createCountryResultSet()));
+        final EntityProxyFactory entityProxyFactory = new EntityProxyFactory(new MockEntityLoaders(createCountryResultSet()));
         final Class<LazyCity> ownerClass = LazyCity.class;
-        final EntityManyToOneColumn test = new EntityManyToOneColumn(ownerClass.getDeclaredField("country"), "lazy_city");
-        final LazyCity instance = ReflectionUtils.createInstance(ownerClass);
-        entityProxyFactory.initManyToOneProxy(4L, instance, test);
+        final EntityManyToOneColumn manyToOneColumn = new EntityManyToOneColumn(ownerClass.getDeclaredField("country"), "lazy_city");
+        final LazyCity owner = prepareOwnerForManyToOne();
 
+        entityProxyFactory.initManyToOneProxy(owner, manyToOneColumn);
 
         assertSoftly(softly -> {
-            final LazyCountry country = instance.getCountry();
+            final LazyCountry country = owner.getCountry();
             softly.assertThat(Enhancer.isEnhanced(country.getClass())).isTrue();
             softly.assertThat(country.getId()).isEqualTo(4L);
             softly.assertThat(country.getName()).isEqualTo("testCountry");
         });
+    }
+
+    private LazyCity prepareOwnerForManyToOne() {
+        final Class<LazyCity> ownerClass = LazyCity.class;
+        final LazyCity owner = ReflectionUtils.createInstance(ownerClass);
+        final LazyCountry manyToOneEntity = ReflectionUtils.createInstance(LazyCountry.class);
+        ReflectionUtils.injectField(manyToOneEntity, "id", 4L);
+        ReflectionUtils.injectField(owner, "country", manyToOneEntity);
+        return owner;
     }
 
 

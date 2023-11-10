@@ -4,7 +4,6 @@ import net.sf.cglib.proxy.*;
 import persistence.core.EntityAssociatedColumn;
 import persistence.core.EntityManyToOneColumn;
 import persistence.core.EntityMetadata;
-import persistence.core.EntityMetadataProvider;
 import persistence.entity.loader.EntityLoader;
 import persistence.entity.loader.EntityLoaders;
 import persistence.util.ReflectionUtils;
@@ -12,11 +11,9 @@ import persistence.util.ReflectionUtils;
 public class EntityProxyFactory {
 
     public static final String GET = "get";
-    private final EntityMetadataProvider entityMetadataProvider;
     private final EntityLoaders entityLoaders;
 
-    public EntityProxyFactory(final EntityMetadataProvider entityMetadataProvider, final EntityLoaders entityLoaders) {
-        this.entityMetadataProvider = entityMetadataProvider;
+    public EntityProxyFactory(final EntityLoaders entityLoaders) {
         this.entityLoaders = entityLoaders;
     }
 
@@ -26,10 +23,17 @@ public class EntityProxyFactory {
         ReflectionUtils.injectField(owner, proxyFieldName, proxyOneToManyFieldValue);
     }
 
-    public <T> void initManyToOneProxy(final Object manyToOneEntityId, final T owner, final EntityManyToOneColumn manyToOneColumn) {
-        final String proxyFieldName = manyToOneColumn.getFieldName();
+    public <T> void initManyToOneProxy(final T owner, final EntityManyToOneColumn manyToOneColumn) {
+        final Object manyToOneEntityId = extractManyToOneEntityId(owner, manyToOneColumn);
+
         final Object proxyManyToManyFieldValue = createManyToOneProxy(manyToOneColumn, manyToOneEntityId);
-        ReflectionUtils.injectField(owner, proxyFieldName, proxyManyToManyFieldValue);
+        ReflectionUtils.injectField(owner, manyToOneColumn.getFieldName(), proxyManyToManyFieldValue);
+    }
+
+    private <T> Object extractManyToOneEntityId(final T owner, final EntityManyToOneColumn manyToOneColumn) {
+        final EntityMetadata<?> manyToOneEntityMetadata = manyToOneColumn.getAssociatedEntityMetadata();
+        final Object manyToOneEntity = ReflectionUtils.getFieldValue(owner, manyToOneColumn.getFieldName());
+        return ReflectionUtils.getFieldValue(manyToOneEntity, manyToOneEntityMetadata.getIdColumnFieldName());
     }
 
     private Object createProxy(final EntityAssociatedColumn proxyColumn, final Object joinColumnId) {
@@ -50,7 +54,7 @@ public class EntityProxyFactory {
         enhancer.setCallbacks(callbacks);
         enhancer.setCallbackFilter(method -> {
             // FIXME Id 접근 자체를 탐지하려면 어떻게 해야할까?
-            final EntityMetadata<?> targetEntityMetadata = entityMetadataProvider.getEntityMetadata(targetColumnType);
+            final EntityMetadata<?> targetEntityMetadata = proxyColumn.getAssociatedEntityMetadata();
             if (method.getName().equalsIgnoreCase(GET + targetEntityMetadata.getIdColumnFieldName())) {
                 return 0; // id return
             }
