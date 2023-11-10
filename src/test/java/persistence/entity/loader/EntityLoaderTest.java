@@ -1,6 +1,7 @@
 package persistence.entity.loader;
 
 import domain.FixtureAssociatedEntity.City;
+import domain.FixtureAssociatedEntity.LazyCity;
 import domain.FixtureAssociatedEntity.Order;
 import domain.FixtureAssociatedEntity.OrderLazyItem;
 import domain.FixtureEntity.Person;
@@ -117,6 +118,16 @@ class EntityLoaderTest {
         final EntityLoader<City> entityLoader = EntityLoader.of(EntityMetadata.from(clazz), new MockDmlGenerator(), new MockJdbcTemplate(rs));
 
         assertThat(entityLoader.renderSelect(1L)).isEqualTo("select city.id, city.name, country.id, country.name from city left join country on country.id = city.country_id where city.id=1");
+    }
+
+    @Test
+    @DisplayName("LazyCity 클래스를 이용해 select query를 만들 수 있다.")
+    void renderLazyCitySelectTest() {
+        final Class<LazyCity> clazz = LazyCity.class;
+        final SimpleResultSet rs = new SimpleResultSet();
+        final EntityLoader<LazyCity> entityLoader = EntityLoader.of(EntityMetadata.from(clazz), new MockDmlGenerator(), new MockJdbcTemplate(rs));
+
+        assertThat(entityLoader.renderSelect(1L)).isEqualTo("select lazy_city.id, lazy_city.name, lazy_city.country_id from lazy_city where lazy_city.id=1");
     }
 
 

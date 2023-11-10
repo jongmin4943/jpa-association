@@ -74,7 +74,7 @@ public class EntityMetadata<T> {
         if (entityColumn.isManyToOne()) {
             final EntityManyToOneColumn manyToOneColumn = (EntityManyToOneColumn) entityColumn;
             if (manyToOneColumn.isFetchTypeLazy()) {
-                return List.of(manyToOneColumn.getName());
+                return List.of(manyToOneColumn.getNameWithAlias());
             }
             return manyToOneColumn.getAssociatedEntityColumnNamesWithAlias();
         }

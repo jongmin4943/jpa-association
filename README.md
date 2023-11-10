@@ -130,7 +130,7 @@ public class Country {
 - [x] ManyToOneColumnMapper 추가 해서 Entity 화 하기
 
 - 요구사항 3 - ManyToOne (FetchType.LAZY)
-- [ ] @ManyToOne(Lazy) 의 경우 쿼리문이 달라진다.
+- [x] @ManyToOne(Lazy) 의 경우 쿼리문이 달라진다.
   <br> city lazy 목표 쿼리문 : `select lazy_city.id, lazy_city.name, lazy_city.country_id from lazy_city where lazy_city.id=1`
 - [ ] 내부 Country Entity 는 Lazy Proxy 객체로 만들어진다.
 - [ ] Country 를 접근할 시 가지고 있던 id 로 Country 를 조회해 넣어준다. 
