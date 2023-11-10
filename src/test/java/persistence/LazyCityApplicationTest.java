@@ -41,12 +41,11 @@ public class LazyCityApplicationTest extends IntegrationTestEnvironment {
 
         final LazyCountry lazyCountry = lazyCity.getCountry();
         assertSoftly(softly -> {
-            // FIXME 아직 조회할 수 없다..
-//            softly.assertThat(Enhancer.isEnhanced(lazyCountry.getClass())).isTrue();
+            softly.assertThat(Enhancer.isEnhanced(lazyCountry.getClass())).isTrue();
             softly.assertThat(lazyCity.getId()).isEqualTo(4L);
-//            softly.assertThat(lazyCity.getName()).isEqualTo("밴쿠버");
-//            softly.assertThat(lazyCountry.getId()).isEqualTo(2L);
-//            softly.assertThat(lazyCountry.getName()).isEqualTo("캐나다");
+            softly.assertThat(lazyCity.getName()).isEqualTo("밴쿠버");
+            softly.assertThat(lazyCountry.getId()).isEqualTo(2L);
+            softly.assertThat(lazyCountry.getName()).isEqualTo("캐나다");
         });
     }
 
